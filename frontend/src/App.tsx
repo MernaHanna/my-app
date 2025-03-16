@@ -8,11 +8,19 @@ import logo from './logo.png';
 const App: React.FC = () => {
   return (
     <Router>
-      <nav className="navbar container" role="navigation" aria-label="main navigation">
+      <nav
+        className="navbar container"
+        role="navigation"
+        aria-label="main navigation"
+      >
         <div className="navbar-brand">
           <Link className="navbar-item" to="/">
-            <figure className='image'>
-              <img src={logo} alt="logo" style={{ width: "auto", height: "100%" }} />
+            <figure className="image">
+              <img
+                src={logo}
+                alt="logo"
+                style={{ width: 'auto', height: '100%' }}
+              />
             </figure>
           </Link>
         </div>
@@ -21,7 +29,7 @@ const App: React.FC = () => {
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                <Link to="/signup" className="button is-primary">
+                <Link to="/signup" className="button is-primary has-text-white">
                   <strong>Signup</strong>
                 </Link>
                 <Link to="/login" className="button is-light">
