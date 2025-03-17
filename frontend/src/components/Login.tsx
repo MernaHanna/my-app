@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faEnvelope,
-  faLock,
-  faExclamationTriangle,
-} from '@fortawesome/free-solid-svg-icons';
-
+import { useAuth } from '../context/AuthContext';
+import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 
 const Login: React.FC = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const { user, token } = useAuth();
+  if (token) return <Navigate to="/profile" replace />;
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,7 +24,9 @@ const Login: React.FC = () => {
         password,
       });
       setMessage('Login successful!');
-      console.log(response.data);
+      // console.log(response.data);
+
+      login(email, response.data.access_token);
     } catch (error: any) {
       setErrorMessage(error.response?.data?.message || 'Login failed');
     }
