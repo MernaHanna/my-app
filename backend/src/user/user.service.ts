@@ -19,7 +19,7 @@ export class UserService {
   }
 
   async findUser(userId: string): Promise<User> {
-    const user = await this.userModel.findOne({ id: userId });
+    const user = await this.userModel.findOne({ _id: userId });
     if (!user) {
       throw new ForbiddenException('You are not allowed to access this resource');
     }

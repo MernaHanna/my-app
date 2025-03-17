@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import fetchWithAuth from '../helpers/request.helper';
+import { fetchWithAuth } from '../helpers/request.helper';
 
 const Profile: React.FC = () => {
   const [name, setName] = useState('');
@@ -9,7 +9,7 @@ const Profile: React.FC = () => {
 
   if (!token) return <Navigate to="/login" replace />;
 
-  fetchWithAuth('http://localhost:3000/user/')
+  fetchWithAuth('user/')
     .then((response) => setName(response.data.name))
     .catch((error) => console.error(error));
 

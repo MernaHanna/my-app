@@ -4,6 +4,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import { fetchWithoutAuth } from '../helpers/request.helper';
 
 const Login: React.FC = () => {
   const { login } = useAuth();
@@ -18,18 +19,33 @@ const Login: React.FC = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:3000/auth/login', {
+    fetchWithoutAuth(
+      'auth/login',
+      {
         email,
         password,
-      });
-      setMessage('Login successful!');
-      // console.log(response.data);
+      },
+      { method: 'POST' }
+    )
+      .then((response) => {
+        setMessage('Login successful!');
+        login(email, response.data.access_token);
+      })
+      .catch((error) =>
+        setErrorMessage(error.response?.data?.message || 'Signup failed')
+      );
+    // try {
+    //   const response = await axios.post('http://localhost:3000/auth/login', {
+    //     email,
+    //     password,
+    //   });
+    //   setMessage('Login successful!');
+    //   // console.log(response.data);
 
-      login(email, response.data.access_token);
-    } catch (error: any) {
-      setErrorMessage(error.response?.data?.message || 'Login failed');
-    }
+    //   login(email, response.data.access_token);
+    // } catch (error: any) {
+    //   setErrorMessage(error.response?.data?.message || 'Login failed');
+    // }
   };
 
   function handleNotificationClose() {

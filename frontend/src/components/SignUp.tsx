@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { fetchWithoutAuth } from '../helpers/request.helper';
 
 const Signup: React.FC = () => {
   const [name, setName] = useState('');
@@ -44,17 +45,30 @@ const Signup: React.FC = () => {
 
       setErrorMessage('Some Fields are missing or not valid');
     } else {
-      try {
-        const response = await axios.post('http://localhost:3000/user/signup', {
+      fetchWithoutAuth(
+        'user/signup',
+        {
           name,
           email,
           password,
-        });
-        setMessage('Signup successful!');
-        console.log(response.data);
-      } catch (error: any) {
-        setErrorMessage(error.response?.data?.message || 'Signup failed');
-      }
+        },
+        { method: 'POST' }
+      )
+        .then((response) => setMessage('Signup successful!'))
+        .catch((error) =>
+          setErrorMessage(error.response?.data?.message || 'Signup failed')
+        );
+      // try {
+      //   const response = await axios.post('http://localhost:3000/user/signup', {
+      //     name,
+      //     email,
+      //     password,
+      //   });
+      //   setMessage('Signup successful!');
+      //   console.log(response.data);
+      // } catch (error: any) {
+      //   setErrorMessage(error.response?.data?.message || 'Signup failed');
+      // }
     }
   };
 

@@ -21,7 +21,7 @@ export class AuthService {
     if (!isMatch) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const payload = { id: user.id, role: user.role };
+    const payload = { userId: user.id, role: user.role };
     return {
       access_token: this.jwtService.sign(payload, {
         secret: process.env.JWT_SECRET ?? 'my-secret-key',
